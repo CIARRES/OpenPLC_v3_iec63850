@@ -1,3 +1,7 @@
+//
+// Modified for OpenPLC61850
+// ADSC 2021
+//
 //-----------------------------------------------------------------------------
 // Copyright 2015 Thiago Alves
 //
@@ -25,10 +29,15 @@
 
 #include <pthread.h>
 #include <stdint.h>
+#include <unordered_map>
+#include <string>
+
+#include "iec61850_model.h"
 
 #define MODBUS_PROTOCOL     0
 #define DNP3_PROTOCOL       1
 #define ENIP_PROTOCOL       2
+#define IEC61850_PROTOCOL   3
 
 //Internal buffers for I/O and memory. These buffers are defined in the
 //auto-generated glueVars.cpp file
@@ -132,6 +141,7 @@ extern bool run_modbus;
 extern bool run_dnp3;
 extern bool run_enip;
 extern bool run_pstorage;
+extern bool run_iec61850;
 extern uint16_t pstorage_polling;
 extern time_t start_time;
 extern time_t end_time;
@@ -158,3 +168,25 @@ void dnp3StartServer(int port);
 //persistent_storage.cpp
 void startPstorage();
 int readPersistentStorage();
+
+//iec61850server.cpp
+void startIec61850Server(int port);
+extern std::unordered_map<std::string,std::string> serverside_mapping;
+
+//static_model.cpp
+extern IedModel iedModel;
+
+//iec61850client.cpp
+void run_iec61850_client();
+extern std::unordered_map<std::string,std::string> clientside_mapping;
+
+//iec61850_rw.cpp
+int write_to_address(MmsValue* mmsval, std::string address);
+bool read_bool(std::string address);
+int16_t read_int16(std::string address);
+int32_t read_int32(std::string address);
+int64_t read_int64(std::string address);
+uint16_t read_uint16(std::string address);
+uint32_t read_uint32(std::string address);
+float read_float(std::string address);
+double read_double(std::string address);

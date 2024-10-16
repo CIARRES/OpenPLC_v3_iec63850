@@ -24,9 +24,9 @@ function linux_install_deps {
     $1 apt-get update
     $1 apt-get install -y build-essential pkg-config bison flex autoconf \
                           automake libtool make git python2.7 \
-                          sqlite3 cmake git curl
-    curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
-    $1 python2 get-pip.py
+                          sqlite3 cmake git curl python3 python3-pip default-jre
+    curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
+    $1 python2.7 get-pip.py
 }
 
 function install_py_deps {
@@ -109,6 +109,29 @@ function install_all_libs {
     fi
     $1 ldconfig
     cd ../..
+
+    echo ""
+    echo "[MAPPER PROGRAM + PUGIXML]"
+    cd utils/iec61850_mapper_src
+    make
+    cp ./mapper ../../webserver/core
+    if [ $? -ne 0 ]; then
+        echo "Error compiling Mapper/Pugixml"
+        echo "OpenPLC was NOT installed!"
+        exit 1
+    fi
+    cd ../..
+
+    echo ""
+    echo "[GENMODEL.JAR]"
+    cd utils/libiec61850_src/tools/model_generator
+    cp genmodel.jar ../../../../webserver/core
+    if [ $? -ne 0 ]; then
+        echo "Error copying genmodel.jar"
+        echo "OpenPLC was NOT installed!"
+        exit 1
+    fi
+    cd ../../../..
 
     if [ "$1" == "sudo" ]; then
         echo ""
@@ -243,7 +266,7 @@ elif [ "$1" == "linux" ]; then
     echo "[FINALIZING]"
     cd webserver/scripts
     ./change_hardware_layer.sh blank_linux
-    ./compile_program.sh blank_program.st
+    ./compile_program.sh blank_program.st scl.icd
     cp ./start_openplc.sh ../../
 
 
