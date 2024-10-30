@@ -213,6 +213,12 @@ class runtime:
     def stop_pstorage(self):
         return self._rpc(f'stop_pstorage()')
     
+    def start_iec61850(self, port_num):
+        return self._rpc(f'start_iec61850({port_num})')
+
+    def stop_iec61850(self):
+        return self._rpc(f'stop_iec61850()')
+
     def logs(self):
         return self._rpc(f'runtime_logs()',1000000)
         

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libhal-shared.a "CMakeFiles/hal-shared.dir/socket/linux/socket_linux.c.o" "CMakeFiles/hal-shared.dir/ethernet/linux/ethernet_linux.c.o" "CMakeFiles/hal-shared.dir/thread/linux/thread_linux.c.o" "CMakeFiles/hal-shared.dir/filesystem/linux/file_provider_linux.c.o" "CMakeFiles/hal-shared.dir/time/unix/time.c.o" "CMakeFiles/hal-shared.dir/serial/linux/serial_port_linux.c.o" "CMakeFiles/hal-shared.dir/memory/lib_memory.c.o"
+/usr/bin/ranlib libhal-shared.a

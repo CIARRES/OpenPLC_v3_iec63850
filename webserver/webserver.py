@@ -30,6 +30,10 @@ class User(flask_login.UserMixin):
 
 def configure_runtime():
     global openplc_runtime
+
+    print("Enabling IEC61850 on port 102")
+    openplc_runtime.start_iec61850(102)
+
     database = "openplc.db"
     conn = create_connection(database)
     if (conn != None):

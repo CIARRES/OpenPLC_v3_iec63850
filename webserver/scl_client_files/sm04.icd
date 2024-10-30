@@ -1,0 +1,828 @@
+<?xml version="1.0"?>
+<SCL xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.iec.ch/61850/2003/SCL">
+	<Header id="SM04" nameStructure="IEDName" />
+	<Communication>
+		<SubNetwork name="node">
+			<ConnectedAP iedName="SM04" apName="W1">
+				<Address>
+					<P type="IP">10.0.4.1</P>
+					<P type="IP-SUBNET">255.255.0.0</P>
+					<P type="IP-GATEWAY">10.0.0.1</P>
+				</Address>
+			</ConnectedAP>
+		</SubNetwork>
+	</Communication>
+	<IED name="SM04" type="Telecontrol application" manufacturer="ADSC" configVersion="2.0.29">
+		<Services>
+			<DynAssociation />
+			<GetDirectory />
+			<GetDataObjectDefinition />
+			<GetDataSetValue />
+			<DataSetDirectory />
+			<ReadWrite />
+			<GetCBValues />
+			<ConfLNs fixPrefix="true" fixLnInst="true" />
+			<ReportSettings cbName="Conf" datSet="Dyn" rptID="Dyn" optFields="Dyn" bufTime="Dyn" trgOps="Dyn" intgPd="Dyn" owner="true" />
+			<GOOSE max="5" />
+			<GSSE max="5" />
+			<FileHandling />
+			<GSEDir />
+			<TimerActivatedControl />
+		</Services>
+		<AccessPoint name="W1" desc="">
+			<Server>
+				<Authentication none="true" />
+				<LDevice inst="LogicalDevice" desc="">
+					<LN0 desc="" lnType="LLN01" lnClass="LLN0" inst="">
+						<DataSet name="AMI" desc="AMI">
+							<FCDA ldInst="LogicalDevice" lnClass="GGIO" fc="MX" lnInst="1" doName="AnVA" daName="mag.f" />
+							<FCDA ldInst="LogicalDevice" lnClass="GGIO" fc="MX" lnInst="1" doName="AnVB" daName="mag.f" />
+							<FCDA ldInst="LogicalDevice" lnClass="GGIO" fc="MX" lnInst="1" doName="AnVC" daName="mag.f" />
+							<FCDA ldInst="LogicalDevice" lnClass="GGIO" fc="MX" lnInst="1" doName="AnIA" daName="mag.f" />
+							<FCDA ldInst="LogicalDevice" lnClass="GGIO" fc="MX" lnInst="1" doName="AnIB" daName="mag.f" />
+							<FCDA ldInst="LogicalDevice" lnClass="GGIO" fc="MX" lnInst="1" doName="AnIC" daName="mag.f" />
+						</DataSet>
+						<DataSet name="SecurityST" desc="Security Status">
+							<FCDA ldInst="LogicalDevice" prefix="" lnClass="GGIO" lnInst="1" doName="SecurityST" fc="ST" daName="stVal" />
+						</DataSet>
+						<ReportControl name="AMI" indexed="true" confRev="1" datSet="AMI" rptID="AMI" buffered="false" intgPd="1000" bufTime="50">
+							<TrgOps dchg="true" qchg="true" dupd="true" period="false" />
+							<OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" entryID="true" configRef="true" />
+							<RptEnabled max="3" />
+						</ReportControl>
+						<ReportControl name="SecurityST" indexed="true" confRev="1" datSet="SecurityST" rptID="SecurityST" buffered="false" intgPd="1000" bufTime="50">
+							<TrgOps dchg="true" qchg="true" dupd="true" period="false" />
+							<OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" entryID="true" configRef="true" />
+							<RptEnabled max="3" />
+						</ReportControl>
+						<GSEControl appID="securityEvent" name="securityEvent" type="GOOSE" datSet="SecurityST" confRev="2" />
+						<DOI name="Mod">
+							<DAI name="stVal">
+								<Val>1</Val>
+							</DAI>
+							<DAI name="ctlModel">
+								<Val>direct-with-normal-security</Val>
+							</DAI>
+						</DOI>
+					</LN0>
+					<LN desc="" lnType="GGIO1" lnClass="GGIO" inst="1" prefix="">
+						<DOI name="Mod">
+							<DAI name="ctlModel">
+								<Val>direct-with-normal-security</Val>
+							</DAI>
+						</DOI>
+						<DOI name="AnVA" />
+						<DOI name="AnVB" />
+						<DOI name="AnVC" />
+						<DOI name="AnIA" />
+						<DOI name="AnIB" />
+						<DOI name="AnIC" />
+						<DO name="SecurityST" type="SPC_SEC" />
+					</LN>
+				</LDevice>
+			</Server>
+		</AccessPoint>
+	</IED>
+	<DataTypeTemplates>
+		<LNodeType id="LLN01" lnClass="LLN0">
+			<DO name="Mod" type="INC_0" />
+			<DO name="Beh" type="INS_0" />
+			<DO name="Health" type="INS_1" />
+			<DO name="NamPlt" type="LPL_0" />
+		</LNodeType>
+		<LNodeType id="GGIO1" lnClass="GGIO">
+			<DO name="Mod" type="INC_1" />
+			<DO name="Beh" type="INS_3" />
+			<DO name="Health" type="INS_4" />
+			<DO name="NamPlt" type="LPL_1" />
+			<DO name="AnVA" type="MV_AnVA" />
+			<DO name="AnVB" type="MV_AnVB" />
+			<DO name="AnVC" type="MV_AnVC" />
+			<DO name="AnIA" type="MV_AnIA" />
+			<DO name="AnIB" type="MV_AnIB" />
+			<DO name="AnIC" type="MV_AnIC" />
+			<DO name="SecurityST" type="SPC_SEC" />
+		</LNodeType>
+		<DOType id="MV_AnVA" cdc="MV">
+			<DA name="mag" type="AnalogueValue" bType="Struct" fc="MX" dchg="true">
+				<Private name="mag">
+					<Private name="f">
+						<Property Name="sMonitoringVar" Value="SM04VA" />
+					</Private>
+				</Private>
+			</DA>
+			<DA name="q" bType="Quality" fc="MX" qchg="true" />
+			<DA name="t" bType="Timestamp" fc="MX" />
+		</DOType>
+		<DOType id="MV_AnVB" cdc="MV">
+			<DA name="mag" type="AnalogueValue" bType="Struct" fc="MX" dchg="true">
+				<Private name="mag">
+					<Private name="f">
+						<Property Name="sMonitoringVar" Value="SM04VB" />
+					</Private>
+				</Private>
+			</DA>
+			<DA name="q" bType="Quality" fc="MX" qchg="true" />
+			<DA name="t" bType="Timestamp" fc="MX" />
+		</DOType>
+		<DOType id="MV_AnVC" cdc="MV">
+			<DA name="mag" type="AnalogueValue" bType="Struct" fc="MX" dchg="true">
+				<Private name="mag">
+					<Private name="f">
+						<Property Name="sMonitoringVar" Value="SM04VC" />
+					</Private>
+				</Private>
+			</DA>
+			<DA name="q" bType="Quality" fc="MX" qchg="true" />
+			<DA name="t" bType="Timestamp" fc="MX" />
+		</DOType>
+		<DOType id="MV_AnIA" cdc="MV">
+			<DA name="mag" type="AnalogueValue" bType="Struct" fc="MX" dchg="true">
+				<Private name="mag">
+					<Private name="f">
+						<Property Name="sMonitoringVar" Value="SM04IA" />
+					</Private>
+				</Private>
+			</DA>
+			<DA name="q" bType="Quality" fc="MX" qchg="true" />
+			<DA name="t" bType="Timestamp" fc="MX" />
+		</DOType>
+		<DOType id="MV_AnIB" cdc="MV">
+			<DA name="mag" type="AnalogueValue" bType="Struct" fc="MX" dchg="true">
+				<Private name="mag">
+					<Private name="f">
+						<Property Name="sMonitoringVar" Value="SM04IB" />
+					</Private>
+				</Private>
+			</DA>
+			<DA name="q" bType="Quality" fc="MX" qchg="true" />
+			<DA name="t" bType="Timestamp" fc="MX" />
+		</DOType>
+		<DOType id="MV_AnIC" cdc="MV">
+			<DA name="mag" type="AnalogueValue" bType="Struct" fc="MX" dchg="true">
+				<Private name="mag">
+					<Private name="f">
+						<Property Name="sMonitoringVar" Value="SM04IC" />
+					</Private>
+				</Private>
+			</DA>
+			<DA name="q" bType="Quality" fc="MX" qchg="true" />
+			<DA name="t" bType="Timestamp" fc="MX" />
+		</DOType>
+		<DOType id="SPC_SEC" cdc="SPC">
+			<DA name="stVal" fc="ST" dchg="true" bType="BOOLEAN">
+				<Private name="stVal">
+					<Property Name="sMonitoringVar" Value="SM04SecST" />
+				</Private>
+			</DA>
+			<DA name="q" bType="Quality" fc="ST" qchg="true" />
+			<DA name="Oper" type="SPCOperate" bType="Struct" fc="CO" />
+			<DA name="ctlModel" type="CtlModels" bType="Enum" fc="CF" />
+			<DA name="t" bType="Timestamp" fc="ST" />
+		</DOType>
+		<DOType id="SPS_0" cdc="SPS">
+			<DA name="stVal" fc="ST" dchg="true" bType="BOOLEAN">
+				<Private name="stVal">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="q" fc="ST" qchg="true" bType="Quality">
+				<Private name="q">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="t" fc="ST" bType="Timestamp">
+				<Private name="t" />
+			</DA>
+		</DOType>
+		<DOType id="INC_0" cdc="INC">
+			<DA name="origin" fc="ST" bType="Struct" type="Originator">
+				<Private name="origin">
+					<Private name="orCat">
+						<Property Name="sMonitoringVar_Label" Value="" />
+						<Property Name="sMonitoringVar" Value="" />
+						<Property Name="sMonitoringInitValue" Value="" />
+						<Property Name="sMonitoringAuto_Label" Value="" />
+						<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+						<Property Name="sTriggerOption_Label" Value="" />
+					</Private>
+					<Private name="orIdent">
+						<Property Name="sMonitoringVar_Label" Value="" />
+						<Property Name="sMonitoringVar" Value="" />
+						<Property Name="sMonitoringInitValue" Value="" />
+						<Property Name="sMonitoringAuto_Label" Value="" />
+						<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+						<Property Name="sTriggerOption_Label" Value="" />
+					</Private>
+				</Private>
+			</DA>
+			<DA name="ctlNum" fc="ST" bType="INT8U">
+				<Private name="ctlNum">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="stVal" fc="ST" dchg="true" bType="INT32">
+				<Private name="stVal">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="1" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="q" fc="ST" qchg="true" bType="Quality">
+				<Private name="q">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="t" fc="ST" bType="Timestamp">
+				<Private name="t" />
+			</DA>
+			<DA name="stSeld" fc="ST" dchg="true" bType="BOOLEAN">
+				<Private name="stSeld">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="ctlModel" fc="CF" bType="Enum" type="CtlModels">
+				<Private name="ctlModel">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="1" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="sboTimeout" fc="CF" bType="INT32U">
+				<Private name="sboTimeout">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="sboClass" fc="CF" bType="Enum" type="SboClasses">
+				<Private name="sboClass">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="minVal" fc="CF" bType="INT32">
+				<Private name="minVal">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="maxVal" fc="CF" bType="INT32">
+				<Private name="maxVal">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="stepSize" fc="CF" bType="INT32U">
+				<Private name="stepSize">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+		</DOType>
+		<DOType id="INC_1" cdc="INC">
+			<DA name="origin" fc="ST" bType="Struct" type="Originator">
+				<Private name="origin">
+					<Private name="orCat">
+						<Property Name="sMonitoringVar_Label" Value="" />
+						<Property Name="sMonitoringVar" Value="" />
+						<Property Name="sMonitoringInitValue" Value="" />
+						<Property Name="sMonitoringAuto_Label" Value="" />
+						<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+						<Property Name="sTriggerOption_Label" Value="" />
+					</Private>
+					<Private name="orIdent">
+						<Property Name="sMonitoringVar_Label" Value="" />
+						<Property Name="sMonitoringVar" Value="" />
+						<Property Name="sMonitoringInitValue" Value="" />
+						<Property Name="sMonitoringAuto_Label" Value="" />
+						<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+						<Property Name="sTriggerOption_Label" Value="" />
+					</Private>
+				</Private>
+			</DA>
+			<DA name="ctlNum" fc="ST" bType="INT8U">
+				<Private name="ctlNum">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="stVal" fc="ST" dchg="true" bType="INT32">
+				<Private name="stVal">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="q" fc="ST" qchg="true" bType="Quality">
+				<Private name="q">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="t" fc="ST" bType="Timestamp">
+				<Private name="t" />
+			</DA>
+			<DA name="stSeld" fc="ST" dchg="true" bType="BOOLEAN">
+				<Private name="stSeld">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="ctlModel" fc="CF" bType="Enum" type="CtlModels">
+				<Private name="ctlModel">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="1" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="sboTimeout" fc="CF" bType="INT32U">
+				<Private name="sboTimeout">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="sboClass" fc="CF" bType="Enum" type="SboClasses">
+				<Private name="sboClass">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="minVal" fc="CF" bType="INT32">
+				<Private name="minVal">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="maxVal" fc="CF" bType="INT32">
+				<Private name="maxVal">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="stepSize" fc="CF" bType="INT32U">
+				<Private name="stepSize">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+		</DOType>
+		<DOType id="INS_0" cdc="INS">
+			<DA name="stVal" fc="ST" dchg="true" bType="INT32">
+				<Private name="stVal">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="q" fc="ST" qchg="true" bType="Quality">
+				<Private name="q">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="t" fc="ST" bType="Timestamp">
+				<Private name="t" />
+			</DA>
+		</DOType>
+		<DOType id="INS_1" cdc="INS">
+			<DA name="stVal" fc="ST" dchg="true" bType="INT32">
+				<Private name="stVal">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="q" fc="ST" qchg="true" bType="Quality">
+				<Private name="q">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="t" fc="ST" bType="Timestamp">
+				<Private name="t" />
+			</DA>
+		</DOType>
+		<DOType id="INS_3" cdc="INS">
+			<DA name="stVal" fc="ST" dchg="true" bType="INT32">
+				<Private name="stVal">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="q" fc="ST" qchg="true" bType="Quality">
+				<Private name="q">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="t" fc="ST" bType="Timestamp">
+				<Private name="t" />
+			</DA>
+		</DOType>
+		<DOType id="INS_4" cdc="INS">
+			<DA name="stVal" fc="ST" dchg="true" bType="INT32">
+				<Private name="stVal">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="q" fc="ST" qchg="true" bType="Quality">
+				<Private name="q">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="t" fc="ST" bType="Timestamp">
+				<Private name="t" />
+			</DA>
+		</DOType>
+		<DOType id="LPL_0" cdc="LPL">
+			<DA name="vendor" fc="DC" bType="VisString255">
+				<Private name="vendor">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="swRev" fc="DC" bType="VisString255">
+				<Private name="swRev">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="d" fc="DC" bType="VisString255">
+				<Private name="d">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="configRev" fc="DC" bType="VisString255">
+				<Private name="configRev">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="cdcNs" fc="EX" bType="VisString255">
+				<Private name="cdcNs">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="cdcName" fc="EX" bType="VisString255">
+				<Private name="cdcName">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="dataNs" fc="EX" bType="VisString255">
+				<Private name="dataNs">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="ldNs" fc="EX" bType="VisString255">
+				<Private name="ldNs">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="lnNs" fc="EX" bType="VisString255">
+				<Private name="lnNs">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+		</DOType>
+		<DOType id="LPL_1" cdc="LPL">
+			<DA name="vendor" fc="DC" bType="VisString255">
+				<Private name="vendor">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="swRev" fc="DC" bType="VisString255">
+				<Private name="swRev">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="d" fc="DC" bType="VisString255">
+				<Private name="d">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+			<DA name="configRev" fc="DC" bType="VisString255">
+				<Private name="configRev">
+					<Property Name="sMonitoringVar_Label" Value="" />
+					<Property Name="sMonitoringVar" Value="" />
+					<Property Name="sMonitoringInitValue" Value="" />
+					<Property Name="sMonitoringAuto_Label" Value="" />
+					<Property Name="sMonitoringAutoDeclare" Value="TRUE" />
+					<Property Name="sControlVar_Label" Value="" />
+					<Property Name="sControlVar" Value="" />
+					<Property Name="sControlAuto_Label" Value="" />
+					<Property Name="sControlAutoDeclare" Value="TRUE" />
+					<Property Name="sTriggerOption_Label" Value="" />
+				</Private>
+			</DA>
+		</DOType>
+		<DAType id="Originator">
+			<BDA name="orCat" bType="Enum" type="orCat" />
+			<BDA name="orIdent" bType="Octet64" />
+		</DAType>
+		<DAType id="PulseConfig">
+			<BDA name="cmdQual" bType="Enum" type="cmdQual" />
+			<BDA name="onDur" bType="INT32U" />
+			<BDA name="offDur" bType="INT32U" />
+			<BDA name="numPls" bType="INT32U" />
+		</DAType>
+		<DAType id="AnalogueValue">
+			<BDA name="f" bType="INT16" />
+		</DAType>
+		<DAType id="SPCOperate">
+			<BDA name="ctlVal" bType="BOOLEAN" />
+			<BDA name="operTm" bType="Timestamp" />
+			<BDA name="origin" bType="Struct" type="Originator" />
+			<BDA name="ctlNum" bType="INT8U" />
+			<BDA name="T" bType="Timestamp" />
+			<BDA name="Test" bType="BOOLEAN" />
+			<BDA name="Check" bType="Check" />
+		</DAType>
+		<EnumType id="orCat">
+			<EnumVal ord="0">not-supported</EnumVal>
+			<EnumVal ord="1">bay-control</EnumVal>
+			<EnumVal ord="2">station-control</EnumVal>
+			<EnumVal ord="3">remote-control</EnumVal>
+			<EnumVal ord="4">automatic-bay</EnumVal>
+			<EnumVal ord="5">automatic-station</EnumVal>
+			<EnumVal ord="6">automatic-remote</EnumVal>
+			<EnumVal ord="7">maintenance</EnumVal>
+			<EnumVal ord="8">process</EnumVal>
+		</EnumType>
+		<EnumType id="cmdQual">
+			<EnumVal ord="0">pulse</EnumVal>
+			<EnumVal ord="1">persistent</EnumVal>
+		</EnumType>
+		<EnumType id="CtlModels">
+			<EnumVal ord="0">status-only</EnumVal>
+			<EnumVal ord="1">direct-with-normal-security</EnumVal>
+			<EnumVal ord="2">sbo-with-normal-security</EnumVal>
+			<EnumVal ord="3">direct-with-enhanced-security</EnumVal>
+			<EnumVal ord="4">sbo-with-enhanced-security</EnumVal>
+		</EnumType>
+		<EnumType id="SboClasses">
+			<EnumVal ord="0">operate-once</EnumVal>
+			<EnumVal ord="1">operate-many</EnumVal>
+		</EnumType>
+		<EnumType id="range">
+			<EnumVal ord="0">normal</EnumVal>
+			<EnumVal ord="1">high</EnumVal>
+			<EnumVal ord="2">low</EnumVal>
+			<EnumVal ord="3">high-high</EnumVal>
+			<EnumVal ord="4">low-low</EnumVal>
+		</EnumType>
+	</DataTypeTemplates>
+</SCL>

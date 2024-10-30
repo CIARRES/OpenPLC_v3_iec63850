@@ -39,17 +39,17 @@ function linux_install_deps {
     if [ -x /bin/yum ]; then
         yum clean expire-cache
         yum check-update
-        $1 yum -q -y install curl make automake gcc gcc-c++ kernel-devel pkg-config bison flex autoconf libtool openssl-devel cmake python3
+        $1 yum -q -y install curl make automake gcc gcc-c++ kernel-devel pkg-config bison flex autoconf libtool openssl-devel cmake python3 default-jre
     #Installing dependencies for Ubuntu/Mint/Debian
     elif [ -x /usr/bin/apt-get ]; then
         $1 apt-get update
         $1 apt-get install -y build-essential pkg-config bison flex autoconf \
                               automake libtool make git \
-                              sqlite3 cmake curl python3 python3-venv
+                              sqlite3 cmake curl python3 python3-venv default-jre
     #Installing dependencies for opensuse tumbleweed
     elif [ -x /usr/bin/zypper ]; then
         $1 zypper ref
-        $1 zypper in -y curl make automake gcc gcc-c++ kernel-devel pkg-config bison flex autoconf libtool openssl-devel cmake libmodbus-devel
+        $1 zypper in -y curl make automake gcc gcc-c++ kernel-devel pkg-config bison flex autoconf libtool openssl-devel cmake libmodbus-devel default-jre
         $1 zypper in -y python python-xml python3 python3-pip 
     else
         fail "Unsupported linux distro."
@@ -212,6 +212,27 @@ function install_libmodbus {
     fi
 }
 
+function install_libiec61850 {
+    echo "[IEC 61850]"
+    cd "$OPENPLC_DIR/utils/libiec61850_src"
+    make || fail "Error installing IEC 61850"
+    cd "$OPENPLC_DIR"
+}
+
+function install_mapper_pugixml {
+    echo "[MAPPER PROGRAM + PUGIXML]"
+    cd "$OPENPLC_DIR/utils/iec61850_mapper_src"
+    make || fail "Error installing Mapper/Pugixml"
+    cp ./mapper "$OPENPLC_DIR/webserver/core"
+    cd "$OPENPLC_DIR"
+}
+
+function install_model_generator {
+    echo "[GENMODEL.JAR]"
+    cd "$OPENPLC_DIR/utils/libiec61850_src/tools/model_generator"
+    cp genmodel.jar "$OPENPLC_DIR/webserver/core" || fail "Error installing genmodel.jar"
+}
+
 function install_systemd_service() {
     if [ "$1" == "sudo" ]; then
         echo "[OPENPLC SERVICE]"
@@ -245,6 +266,9 @@ function install_all_libs {
     install_opendnp3 "$1"
     disable_ethercat "$1"
     install_libmodbus "$1"
+    install_libiec61850 "$1"
+    install_mapper_pugixml "$1"
+    install_model_generator "$1"
 }
 
 function finalize_install {
@@ -255,7 +279,7 @@ function finalize_install {
     else
         ./change_hardware_layer.sh blank_linux
     fi
-    ./compile_program.sh blank_program.st
+    ./compile_program.sh substation.st scl.icd
     cat > "$OPENPLC_DIR/start_openplc.sh" <<EOF
 #!/bin/bash
 if [ -d "/docker_persistent" ]; then

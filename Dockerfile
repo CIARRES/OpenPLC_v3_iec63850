@@ -11,7 +11,6 @@ VOLUME /persistent
 RUN ./install.sh docker \
     && touch /persistent/mbconfig.cfg \
     && touch /persistent/persistent.file \
-    && mkdir /persistent/st_files \
     && cp /workdir/webserver/openplc.db /persistent/openplc.db \
     && mv /workdir/webserver/openplc.db /workdir/webserver/openplc_default.db \
     && cp /workdir/webserver/dnp3.cfg /persistent/dnp3.cfg \
@@ -27,4 +26,4 @@ RUN ./install.sh docker \
     && ln -s /persistent/st_files /workdir/webserver/st_files \
     && ln -s /persistent/active_program /workdir/webserver/active_program
 
-ENTRYPOINT ["./start_openplc.sh"]
+ENTRYPOINT ["bash", "-c", "./start_openplc.sh ; exec /bin/bash"]

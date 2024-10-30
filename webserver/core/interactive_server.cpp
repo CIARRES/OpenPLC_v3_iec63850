@@ -49,6 +49,8 @@ bool run_enip = 0;
 uint16_t enip_port = 44818;
 bool run_pstorage = 0;
 uint16_t pstorage_polling = 10;
+bool run_iec61850 = 0;
+uint16_t iec61850_port = 102;
 unsigned char server_command[1024];
 int command_index = 0;
 bool processing_command = 0;
@@ -60,6 +62,7 @@ pthread_t modbus_thread;
 pthread_t dnp3_thread;
 pthread_t enip_thread;
 pthread_t pstorage_thread;
+pthread_t iec61850_thread;
 
 //-----------------------------------------------------------------------------
 // Configure Ethercat
@@ -97,6 +100,19 @@ void *enipThread(void *arg)
 void *pstorageThread(void *arg)
 {
     startPstorage();
+}
+
+//-----------------------------------------------------------------------------
+// Start the IEC61850 Thread
+//-----------------------------------------------------------------------------
+void *iec61850Thread(void *arg)
+{
+    pthread_t iec61850client;
+    pthread_create(&iec61850client, NULL, run_iec61850_client, NULL);
+
+    startIec61850Server(iec61850_port);
+
+    pthread_join(iec61850client, NULL);
 }
 
 //-----------------------------------------------------------------------------
@@ -263,6 +279,13 @@ void processCommand(unsigned char *buffer, int client_fd)
             sprintf(log_msg, "DNP3 server was stopped\n");
             log(log_msg);
         }
+        if (run_iec61850)
+        {
+            run_iec61850 = 0;
+            pthread_join(iec61850_thread, NULL);
+            sprintf(log_msg, "IEC61850 server was stopped\n");
+            log(log_msg);
+        }
         run_openplc = 0;
         processing_command = false;
     }
@@ -413,6 +436,41 @@ void processCommand(unsigned char *buffer, int client_fd)
         }
         processing_command = false;
     }
+    else if (strncmp(buffer, "start_iec61850(", 15) == 0)
+    {
+        processing_command = true;
+        iec61850_port = readCommandArgument(buffer);
+        sprintf(log_msg, "Issued start_iec61850() command to start on port: %d\n", iec61850_port);
+        log(log_msg);
+        if (run_iec61850)
+        {
+            sprintf(log_msg, "IEC61850 server already active. Restarting on port: %d\n", iec61850_port);
+            log(log_msg);
+            //Stop IEC61850 server
+            run_iec61850 = 0;
+            pthread_join(iec61850_thread, NULL);
+            sprintf(log_msg, "IEC61850 server was stopped\n");
+            log(log_msg);
+        }
+        //Start DNP3 server
+        run_iec61850 = 1;
+        pthread_create(&iec61850_thread, NULL, iec61850Thread, NULL);
+        processing_command = false;
+    }
+    else if (strncmp(buffer, "stop_iec61850()", 15) == 0 )
+    {
+        processing_command = true;
+        sprintf(log_msg, "Issued stop_iec61850() command\n");
+        log(log_msg);
+        if (run_iec61850)
+        {
+            run_iec61850 = 0;
+            pthread_join(iec61850_thread, NULL);
+            sprintf(log_msg, "IEC61850 server was stopped\n");
+            log(log_msg);
+        }
+        processing_command = false;
+    }
     else if (strncmp(buffer, "runtime_logs()", 14) == 0)
     {
         processing_command = true;
@@ -542,9 +600,11 @@ void startInteractiveServer(int port)
     run_dnp3 = 0;
     run_enip = 0;
     run_pstorage = 0;
+    run_iec61850 = 0;
     pthread_join(modbus_thread, NULL);
     pthread_join(dnp3_thread, NULL);
     pthread_join(enip_thread, NULL);
+    pthread_join(iec61850_thread, NULL);
     
     printf("Closing socket...\n");
     closeSocket(socket_fd);

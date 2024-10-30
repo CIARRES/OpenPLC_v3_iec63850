@@ -22,3 +22,5 @@ webserver/scripts/ethercat
 
 # Runtime directories
 .venv
+
+*.DS_Store

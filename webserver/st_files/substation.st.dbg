@@ -1,0 +1,192 @@
+char md5[] = "f0bc2d97bfc4b07ea70e931a6e667bf4";
+/*
+ * This file is part of OpenPLC Runtime
+ *
+ * Copyright (C) 2023 Autonomy, GP Orcullo
+ * Based on the work by GP Orcullo on Beremiz for uC
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#include <stdbool.h>
+
+#include "iec_types_all.h"
+#include "POUS.h"
+
+#define SAME_ENDIANNESS      0
+#define REVERSE_ENDIANNESS   1
+
+uint8_t endianness;
+
+
+extern METERING RES0__INSTANCE0;
+
+static const struct {
+    void *ptr;
+    __IEC_types_enum type;
+} debug_vars[] = {
+    {&(RES0__INSTANCE0.SM01VA), INT_ENUM},
+    {&(RES0__INSTANCE0.SM01VB), INT_ENUM},
+    {&(RES0__INSTANCE0.SM01VC), INT_ENUM},
+    {&(RES0__INSTANCE0.SM01IA), INT_ENUM},
+    {&(RES0__INSTANCE0.SM01IB), INT_ENUM},
+    {&(RES0__INSTANCE0.SM01IC), INT_ENUM},
+    {&(RES0__INSTANCE0.SM02VA), INT_ENUM},
+    {&(RES0__INSTANCE0.SM02VB), INT_ENUM},
+    {&(RES0__INSTANCE0.SM02VC), INT_ENUM},
+    {&(RES0__INSTANCE0.SM02IA), INT_ENUM},
+    {&(RES0__INSTANCE0.SM02IB), INT_ENUM},
+    {&(RES0__INSTANCE0.SM02IC), INT_ENUM},
+    {&(RES0__INSTANCE0.SM03VA), INT_ENUM},
+    {&(RES0__INSTANCE0.SM03VB), INT_ENUM},
+    {&(RES0__INSTANCE0.SM03VC), INT_ENUM},
+    {&(RES0__INSTANCE0.SM03IA), INT_ENUM},
+    {&(RES0__INSTANCE0.SM03IB), INT_ENUM},
+    {&(RES0__INSTANCE0.SM03IC), INT_ENUM},
+    {&(RES0__INSTANCE0.SM04VA), INT_ENUM},
+    {&(RES0__INSTANCE0.SM04VB), INT_ENUM},
+    {&(RES0__INSTANCE0.SM04VC), INT_ENUM},
+    {&(RES0__INSTANCE0.SM04IA), INT_ENUM},
+    {&(RES0__INSTANCE0.SM04IB), INT_ENUM},
+    {&(RES0__INSTANCE0.SM04IC), INT_ENUM},
+    {&(RES0__INSTANCE0.SM01SECST), BOOL_ENUM},
+    {&(RES0__INSTANCE0.SM02SECST), BOOL_ENUM},
+    {&(RES0__INSTANCE0.SM03SECST), BOOL_ENUM},
+    {&(RES0__INSTANCE0.SM04SECST), BOOL_ENUM},
+    {&(RES0__INSTANCE0.CB01CST), BOOL_ENUM},
+    {&(RES0__INSTANCE0.CB02CST), BOOL_ENUM},
+    {&(RES0__INSTANCE0.CB03CST), BOOL_ENUM},
+    {&(RES0__INSTANCE0.CB04CST), BOOL_ENUM},
+    {&(RES0__INSTANCE0.CB01OPST), BOOL_ENUM},
+    {&(RES0__INSTANCE0.CB02OPST), BOOL_ENUM},
+    {&(RES0__INSTANCE0.CB03OPST), BOOL_ENUM},
+    {&(RES0__INSTANCE0.CB04OPST), BOOL_ENUM},
+    {&(RES0__INSTANCE0.CLOSE), BOOL_ENUM},
+};
+
+#define VAR_COUNT               37
+
+uint16_t get_var_count(void)
+{
+    return VAR_COUNT;
+}
+
+size_t get_var_size(size_t idx)
+{
+    if (idx >= VAR_COUNT)
+    {
+        return 0;
+    }
+    switch (debug_vars[idx].type) {
+    case BOOL_ENUM:
+        return sizeof(BOOL);
+    case INT_ENUM:
+        return sizeof(INT);
+    default:
+        return 0;
+    }
+}
+
+void *get_var_addr(size_t idx)
+{
+    void *ptr = debug_vars[idx].ptr;
+
+    switch (debug_vars[idx].type) {
+    case BOOL_ENUM:
+        return (void *)&((__IEC_BOOL_t *) ptr)->value;
+    case INT_ENUM:
+        return (void *)&((__IEC_INT_t *) ptr)->value;
+    default:
+        return 0;
+    }
+}
+
+void force_var(size_t idx, bool forced, void *val)
+{
+    void *ptr = debug_vars[idx].ptr;
+
+    if (forced) {
+        size_t var_size = get_var_size(idx);
+        switch (debug_vars[idx].type) {
+        case BOOL_ENUM: {
+            memcpy(&((__IEC_BOOL_t *) ptr)->value, val, var_size);
+            //((__IEC_BOOL_t *) ptr)->value = *((BOOL *) val);
+            ((__IEC_BOOL_t *) ptr)->flags |= __IEC_FORCE_FLAG;
+            break;
+        }
+        case INT_ENUM: {
+            memcpy(&((__IEC_INT_t *) ptr)->value, val, var_size);
+            //((__IEC_INT_t *) ptr)->value = *((INT *) val);
+            ((__IEC_INT_t *) ptr)->flags |= __IEC_FORCE_FLAG;
+            break;
+        }
+        default:
+            break;
+        }
+    } else {
+        switch (debug_vars[idx].type) {
+        case BOOL_ENUM:
+            ((__IEC_BOOL_t *) ptr)->flags &= ~__IEC_FORCE_FLAG;
+            break;
+        case INT_ENUM:
+            ((__IEC_INT_t *) ptr)->flags &= ~__IEC_FORCE_FLAG;
+            break;
+        default:
+            break;
+        }
+    }
+}
+
+void swap_bytes(void *ptr, size_t size) 
+{
+    uint8_t *bytePtr = (uint8_t *)ptr;
+    size_t i;
+    for (i = 0; i < size / 2; ++i) 
+    {
+        uint8_t temp = bytePtr[i];
+        bytePtr[i] = bytePtr[size - 1 - i];
+        bytePtr[size - 1 - i] = temp;
+    }
+}
+
+void trace_reset(void)
+{
+    for (size_t i=0; i < VAR_COUNT; i++) 
+    {
+        force_var(i, false, 0);
+    }
+}
+
+void set_trace(size_t idx, bool forced, void *val)
+{
+    if (idx >= 0 && idx < VAR_COUNT) 
+    {
+        if (endianness == REVERSE_ENDIANNESS)
+        {
+            // Aaaaarghhhh... Stupid AVR is Big Endian.
+            swap_bytes(val, get_var_size(idx));
+        }
+
+        force_var(idx, forced, val);
+    }
+}
+
+void set_endianness(uint8_t value)
+{
+    if (value == SAME_ENDIANNESS || value == REVERSE_ENDIANNESS)
+    {
+        endianness = value;
+    }
+}
