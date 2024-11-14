@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <SCL xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.iec.ch/61850/2003/SCL">
-	<Header id="SM03" nameStructure="IEDName" />
+	<Header id="PM04" nameStructure="IEDName" />
 	<Communication>
 		<SubNetwork name="node">
-			<ConnectedAP iedName="SM03" apName="W1">
+			<ConnectedAP iedName="PM04" apName="W1">
 				<Address>
-					<P type="IP">10.0.3.1</P>
+					<P type="IP">10.0.4.1</P>
 					<P type="IP-SUBNET">255.255.0.0</P>
 					<P type="IP-GATEWAY">10.0.0.1</P>
 				</Address>
 			</ConnectedAP>
 		</SubNetwork>
 	</Communication>
-	<IED name="SM03" type="Telecontrol application" manufacturer="ADSC" configVersion="2.0.29">
+	<IED name="PM04" type="Telecontrol application" manufacturer="ADSC" configVersion="2.0.29">
 		<Services>
 			<DynAssociation />
 			<GetDirectory />
@@ -107,7 +107,7 @@
 			<DA name="mag" type="AnalogueValue" bType="Struct" fc="MX" dchg="true">
 				<Private name="mag">
 					<Private name="f">
-						<Property Name="sMonitoringVar" Value="SM03VA" />
+						<Property Name="sMonitoringVar" Value="PM04VA" />
 					</Private>
 				</Private>
 			</DA>
@@ -118,7 +118,7 @@
 			<DA name="mag" type="AnalogueValue" bType="Struct" fc="MX" dchg="true">
 				<Private name="mag">
 					<Private name="f">
-						<Property Name="sMonitoringVar" Value="SM03VB" />
+						<Property Name="sMonitoringVar" Value="PM04VB" />
 					</Private>
 				</Private>
 			</DA>
@@ -129,7 +129,7 @@
 			<DA name="mag" type="AnalogueValue" bType="Struct" fc="MX" dchg="true">
 				<Private name="mag">
 					<Private name="f">
-						<Property Name="sMonitoringVar" Value="SM03VC" />
+						<Property Name="sMonitoringVar" Value="PM04VC" />
 					</Private>
 				</Private>
 			</DA>
@@ -140,7 +140,7 @@
 			<DA name="mag" type="AnalogueValue" bType="Struct" fc="MX" dchg="true">
 				<Private name="mag">
 					<Private name="f">
-						<Property Name="sMonitoringVar" Value="SM03IA" />
+						<Property Name="sMonitoringVar" Value="PM04IA" />
 					</Private>
 				</Private>
 			</DA>
@@ -151,7 +151,7 @@
 			<DA name="mag" type="AnalogueValue" bType="Struct" fc="MX" dchg="true">
 				<Private name="mag">
 					<Private name="f">
-						<Property Name="sMonitoringVar" Value="SM03IB" />
+						<Property Name="sMonitoringVar" Value="PM04IB" />
 					</Private>
 				</Private>
 			</DA>
@@ -162,7 +162,7 @@
 			<DA name="mag" type="AnalogueValue" bType="Struct" fc="MX" dchg="true">
 				<Private name="mag">
 					<Private name="f">
-						<Property Name="sMonitoringVar" Value="SM03IC" />
+						<Property Name="sMonitoringVar" Value="PM04IC" />
 					</Private>
 				</Private>
 			</DA>
@@ -172,7 +172,7 @@
 		<DOType id="SPC_SEC" cdc="SPC">
 			<DA name="stVal" fc="ST" dchg="true" bType="BOOLEAN">
 				<Private name="stVal">
-					<Property Name="sMonitoringVar" Value="SM03SecST" />
+					<Property Name="sMonitoringVar" Value="PM04SecST" />
 				</Private>
 			</DA>
 			<DA name="q" bType="Quality" fc="ST" qchg="true" />

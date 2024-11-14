@@ -1,4 +1,4 @@
-char md5[] = "f0bc2d97bfc4b07ea70e931a6e667bf4";
+char md5[] = "6af44537f1cdb28cb67cb1cd5e6ac69d";
 /*
  * This file is part of OpenPLC Runtime
  *
@@ -37,42 +37,42 @@ static const struct {
     void *ptr;
     __IEC_types_enum type;
 } debug_vars[] = {
-    {&(RES0__INSTANCE0.PM01VA), INT_ENUM},
-    {&(RES0__INSTANCE0.PM01VB), INT_ENUM},
-    {&(RES0__INSTANCE0.PM01VC), INT_ENUM},
-    {&(RES0__INSTANCE0.PM01IA), INT_ENUM},
-    {&(RES0__INSTANCE0.PM01IB), INT_ENUM},
-    {&(RES0__INSTANCE0.PM01IC), INT_ENUM},
-    {&(RES0__INSTANCE0.PM02VA), INT_ENUM},
-    {&(RES0__INSTANCE0.PM02VB), INT_ENUM},
-    {&(RES0__INSTANCE0.PM02VC), INT_ENUM},
-    {&(RES0__INSTANCE0.PM02IA), INT_ENUM},
-    {&(RES0__INSTANCE0.PM02IB), INT_ENUM},
-    {&(RES0__INSTANCE0.PM02IC), INT_ENUM},
-    {&(RES0__INSTANCE0.PM03VA), INT_ENUM},
-    {&(RES0__INSTANCE0.PM03VB), INT_ENUM},
-    {&(RES0__INSTANCE0.PM03VC), INT_ENUM},
-    {&(RES0__INSTANCE0.PM03IA), INT_ENUM},
-    {&(RES0__INSTANCE0.PM03IB), INT_ENUM},
-    {&(RES0__INSTANCE0.PM03IC), INT_ENUM},
-    {&(RES0__INSTANCE0.PM04VA), INT_ENUM},
-    {&(RES0__INSTANCE0.PM04VB), INT_ENUM},
-    {&(RES0__INSTANCE0.PM04VC), INT_ENUM},
-    {&(RES0__INSTANCE0.PM04IA), INT_ENUM},
-    {&(RES0__INSTANCE0.PM04IB), INT_ENUM},
-    {&(RES0__INSTANCE0.PM04IC), INT_ENUM},
-    {&(RES0__INSTANCE0.PM01SECST), BOOL_ENUM},
-    {&(RES0__INSTANCE0.PM02SECST), BOOL_ENUM},
-    {&(RES0__INSTANCE0.PM03SECST), BOOL_ENUM},
-    {&(RES0__INSTANCE0.PM04SECST), BOOL_ENUM},
-    {&(RES0__INSTANCE0.CB01CST), BOOL_ENUM},
-    {&(RES0__INSTANCE0.CB02CST), BOOL_ENUM},
-    {&(RES0__INSTANCE0.CB03CST), BOOL_ENUM},
-    {&(RES0__INSTANCE0.CB04CST), BOOL_ENUM},
-    {&(RES0__INSTANCE0.CB01OPST), BOOL_ENUM},
-    {&(RES0__INSTANCE0.CB02OPST), BOOL_ENUM},
-    {&(RES0__INSTANCE0.CB03OPST), BOOL_ENUM},
-    {&(RES0__INSTANCE0.CB04OPST), BOOL_ENUM},
+    {&(RES0__INSTANCE0.PM01VA), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM01VB), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM01VC), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM01IA), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM01IB), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM01IC), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM02VA), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM02VB), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM02VC), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM02IA), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM02IB), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM02IC), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM03VA), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM03VB), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM03VC), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM03IA), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM03IB), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM03IC), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM04VA), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM04VB), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM04VC), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM04IA), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM04IB), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM04IC), INT_P_ENUM},
+    {&(RES0__INSTANCE0.PM01SECST), BOOL_P_ENUM},
+    {&(RES0__INSTANCE0.PM02SECST), BOOL_P_ENUM},
+    {&(RES0__INSTANCE0.PM03SECST), BOOL_P_ENUM},
+    {&(RES0__INSTANCE0.PM04SECST), BOOL_P_ENUM},
+    {&(RES0__INSTANCE0.CB01CST), BOOL_P_ENUM},
+    {&(RES0__INSTANCE0.CB02CST), BOOL_P_ENUM},
+    {&(RES0__INSTANCE0.CB03CST), BOOL_P_ENUM},
+    {&(RES0__INSTANCE0.CB04CST), BOOL_P_ENUM},
+    {&(RES0__INSTANCE0.CB01OPST), BOOL_O_ENUM},
+    {&(RES0__INSTANCE0.CB02OPST), BOOL_O_ENUM},
+    {&(RES0__INSTANCE0.CB03OPST), BOOL_O_ENUM},
+    {&(RES0__INSTANCE0.CB04OPST), BOOL_O_ENUM},
     {&(RES0__INSTANCE0.CLOSE), BOOL_ENUM},
 };
 
@@ -90,10 +90,12 @@ size_t get_var_size(size_t idx)
         return 0;
     }
     switch (debug_vars[idx].type) {
-    case BOOL_ENUM:
-        return sizeof(BOOL);
-    case INT_ENUM:
+    case INT_P_ENUM:
         return sizeof(INT);
+    case BOOL_ENUM:
+    case BOOL_O_ENUM:
+    case BOOL_P_ENUM:
+        return sizeof(BOOL);
     default:
         return 0;
     }
@@ -104,10 +106,17 @@ void *get_var_addr(size_t idx)
     void *ptr = debug_vars[idx].ptr;
 
     switch (debug_vars[idx].type) {
+    case INT_P_ENUM:
+        return (void *)((((__IEC_INT_p *) ptr)->flags & __IEC_FORCE_FLAG) 
+                        ? &(((__IEC_INT_p *) ptr)->fvalue) 
+                        : ((__IEC_INT_p *) ptr)->value);
     case BOOL_ENUM:
         return (void *)&((__IEC_BOOL_t *) ptr)->value;
-    case INT_ENUM:
-        return (void *)&((__IEC_INT_t *) ptr)->value;
+    case BOOL_O_ENUM:
+    case BOOL_P_ENUM:
+        return (void *)((((__IEC_BOOL_p *) ptr)->flags & __IEC_FORCE_FLAG) 
+                        ? &(((__IEC_BOOL_p *) ptr)->fvalue) 
+                        : ((__IEC_BOOL_p *) ptr)->value);
     default:
         return 0;
     }
@@ -120,16 +129,28 @@ void force_var(size_t idx, bool forced, void *val)
     if (forced) {
         size_t var_size = get_var_size(idx);
         switch (debug_vars[idx].type) {
+        case INT_P_ENUM: {
+            memcpy(&((__IEC_INT_p *) ptr)->fvalue, val, var_size);
+            //((__IEC_INT_p *) ptr)->fvalue = *((INT *) val);
+            ((__IEC_INT_p *) ptr)->flags |= __IEC_FORCE_FLAG;
+            break;
+        }
         case BOOL_ENUM: {
             memcpy(&((__IEC_BOOL_t *) ptr)->value, val, var_size);
             //((__IEC_BOOL_t *) ptr)->value = *((BOOL *) val);
             ((__IEC_BOOL_t *) ptr)->flags |= __IEC_FORCE_FLAG;
             break;
         }
-        case INT_ENUM: {
-            memcpy(&((__IEC_INT_t *) ptr)->value, val, var_size);
-            //((__IEC_INT_t *) ptr)->value = *((INT *) val);
-            ((__IEC_INT_t *) ptr)->flags |= __IEC_FORCE_FLAG;
+        case BOOL_O_ENUM: {
+            memcpy((((__IEC_BOOL_p *) ptr)->value), val, var_size);
+            //*(((__IEC_BOOL_p *) ptr)->value) = *((BOOL *) val);
+            ((__IEC_BOOL_p *) ptr)->flags |= __IEC_FORCE_FLAG;
+            break;
+        }
+        case BOOL_P_ENUM: {
+            memcpy(&((__IEC_BOOL_p *) ptr)->fvalue, val, var_size);
+            //((__IEC_BOOL_p *) ptr)->fvalue = *((BOOL *) val);
+            ((__IEC_BOOL_p *) ptr)->flags |= __IEC_FORCE_FLAG;
             break;
         }
         default:
@@ -137,11 +158,15 @@ void force_var(size_t idx, bool forced, void *val)
         }
     } else {
         switch (debug_vars[idx].type) {
+        case INT_P_ENUM:
+            ((__IEC_INT_p *) ptr)->flags &= ~__IEC_FORCE_FLAG;
+            break;
         case BOOL_ENUM:
             ((__IEC_BOOL_t *) ptr)->flags &= ~__IEC_FORCE_FLAG;
             break;
-        case INT_ENUM:
-            ((__IEC_INT_t *) ptr)->flags &= ~__IEC_FORCE_FLAG;
+        case BOOL_O_ENUM:
+        case BOOL_P_ENUM:
+            ((__IEC_BOOL_p *) ptr)->flags &= ~__IEC_FORCE_FLAG;
             break;
         default:
             break;
